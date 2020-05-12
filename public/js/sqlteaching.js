@@ -10,7 +10,7 @@ Functions
 
 // Return an HTML table as a string, given SQL.js results
 function table_from_results(res) {
-    let table_string = '<table class="table">';
+    let table_string = '<table class="table table-sm table-responsive-md">';
     if (res) {
         table_string += '<thead class="thead-dark"><tr>';
         for (let index in res[0].columns) {
