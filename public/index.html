@@ -36,36 +36,33 @@
     <section class="container-fluid">
         <h2>Explications</h2>
         <div id='info'>
-
         </div>
     </section>
     <section class="container-fluid">
         <h2>Exercice</h2>
-        <div id='prompt'>
+        <div id='prompt' class="col-md-6">
         </div>
         <div id='answer-correct' class='alert alert-success'>
         </div>
         <div id='answer-wrong' class='alert alert-danger'>
         </div>
-        <div class='sql-input-container'>
+        <div class='sql-input-container col-md-3'>
             <label class="h3 d-block" for="sql-input" id='sql-header'>Entrer la requête SQL:</label>
-            <textarea id='sql-input' rows=8 cols=40 tabindex='1'></textarea>
+            <textarea id='sql-input' class="form-control" rows=8 cols=40 tabindex='1'></textarea>
             <button id='sql-link' class="btn btn-dark d-block" tabindex="2">Lancer la requête</button>
         </div>
-        <section>
-            <div class='current-tables-container'>
-                <h3>Table(s) courante(s)</h3>
-                <div id='current-tables'></div>
-            </div>
-            <div class='results-container'>
-                <h3>Résultats obtenus</h3>
-                <div id='results'></div>
-            </div>
-            <div class='expected-results-container'>
-                <h3>Résultats attendus</h3>
-                <div id='expected-results'></div>
-            </div>
-        </section>
+        <div class='current-tables-container col-md-3'>
+            <h3>Table(s) courante(s)</h3>
+            <div id='current-tables'></div>
+        </div>
+        <div class='results-container col-md-3'>
+            <h3>Résultats obtenus</h3>
+            <div id='results'></div>
+        </div>
+        <div class='expected-results-container col-md-3'>
+            <h3>Résultats attendus</h3>
+            <div id='expected-results'></div>
+        </div>
     </section>
 </main>
 
