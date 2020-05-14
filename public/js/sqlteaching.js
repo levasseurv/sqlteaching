@@ -10,7 +10,7 @@ Functions
 
 // Return an HTML table as a string, given SQL.js results
 function table_from_results(res) {
-    let table_string = '<table class="table table-sm table-responsive-md">';
+    let table_string = '<table class="table table-sm table-responsive-md col-md-3 mr-auto">';
     if (res) {
         table_string += '<thead class="thead-dark"><tr>';
         for (let index in res[0].columns) {
@@ -44,11 +44,11 @@ let grade_results = function (results, correct_answer) {
 
 let show_is_correct = function (is_correct, custom_error_message) {
     if (is_correct) {
-        is_correct_html = 'Congrats!  That is correct!<br/>';
+        is_correct_html = 'Félicitations vous avez réussi cet exercice !<br/>';
         if (current_level < levels.length) {
-            is_correct_html += '<a href="#!' + levels[current_level]['short_name'] + '" tabindex="3">Next Lesson</a>';
+            is_correct_html += '<a href="#" tabindex="3" onclick="load_level(' + "'"+ levels[current_level]['short_name'] + "')"+'">Passer au prochain exercice</a>';
         } else {
-            is_correct_html += 'That is currently the end of the tutorial.  Please check back later for more!';
+            is_correct_html += "C'était le dernier exercice ! Félicitations :)";
         }
         $('#answer-correct').html(is_correct_html).show();
         $('#answer-wrong').hide();
@@ -56,7 +56,7 @@ let show_is_correct = function (is_correct, custom_error_message) {
         $('#answer-wrong').text(custom_error_message).show();
         $('#answer-correct').hide();
     } else {
-        $('#answer-wrong').text('That was incorrect.  Please try again.').show();
+        $('#answer-wrong').text('Les résultats obtenus ne correspondent pas aux résultats attendus. Veuillez réessayer.').show();
         $('#answer-correct').hide();
     }
 };
@@ -78,7 +78,7 @@ let execute_query = function () {
         let results = db.exec($('#sql-input').val());
         if (results.length === 0) {
             $('#results').html('');
-            show_is_correct(false, 'The query you have entered did not return any results.  Please try again.');
+            show_is_correct(false, "Malheureusement la requête n'a retourné aucun résultat.");
         } else {
             $('#results').html(table_from_results(results));
             let is_correct = grade_results(results, correct_answer);
@@ -93,12 +93,12 @@ let execute_query = function () {
                     show_is_correct(false, cur_level['custom_error_message']);
                 }
             } else {
-                show_is_correct(false, 'The query you have entered did not return the proper results.  Please try again.');
+                show_is_correct(false, 'Les résultats obtenus ne correspondent pas aux résultats attendus. Veuillez réessayer.');
             }
         }
     } catch (err) {
         $('#results').html('');
-        show_is_correct(false, 'The query you have entered is not valid.  Please try again.');
+        show_is_correct(false, " La requête n'est pas valide : «"+err+ "». Veuillez recommencer et vérifier que les tables et les champs existent dans les tables courantes de l'exercice.");
     }
     $('.expected-results-container').show();
     $('#expected-results').html(table_from_results([correct_answer]));
@@ -110,47 +110,47 @@ let load_database = function (db_type) {
     let database, sqlstr, table_names;
     database = new sql.Database();
     switch (db_type) {
-        case 'family':
-            sqlstr = "CREATE TABLE family_members (id int, nom char, genre char, espece char, lus int);";
-            sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'male', 'human', 200);";
-            sqlstr += "INSERT INTO family_members VALUES (2, 'Mary', 'female', 'human', 180);";
-            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'male', 'dog', 0);";
-            table_names = ['family_members'];
+        case 'famille':
+            sqlstr = "CREATE TABLE famille (id int, nom char, livres_lus int);";
+            sqlstr += "INSERT INTO famille VALUES (1, 'Dave', 200);";
+            sqlstr += "INSERT INTO famille VALUES (2, 'Marie', 180);";
+            sqlstr += "INSERT INTO famille VALUES (3, 'Chaton', 0);";
+            table_names = ['famille'];
             break;
-        case 'friends_of_pickles':
-            sqlstr = "CREATE TABLE friends_of_pickles (id int, name char, gender char, species char, height_cm int);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (1, 'Dave', 'male', 'human', 180);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (2, 'Mary', 'female', 'human', 160);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (3, 'Fry', 'male', 'cat', 30);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (4, 'Leela', 'female', 'cat', 25);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (5, 'Odie', 'male', 'dog', 40);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (6, 'Jumpy', 'male', 'dog', 35);";
-            sqlstr += "INSERT INTO friends_of_pickles VALUES (7, 'Sneakers', 'male', 'dog', 55);";
-            table_names = ['friends_of_pickles'];
+        case 'amischaton':
+            sqlstr = "CREATE TABLE amis_chaton (id int, nom char, type char, taille_cm int);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (1, 'Dave', 'human', 180);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (2, 'Marie', 'human', 160);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (3, 'Frisou', 'cat', 30);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (4, 'Leela', 'cat', 25);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (5, 'Odie', 'chien', 40);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (6, 'Pitou','chien', 35);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (7, 'Jojo', 'chien', 55);";
+            table_names = ['amis_chaton'];
             break;
         case 'family_and_legs':
-            sqlstr = "CREATE TABLE family_members (id int, name char, species char, num_books_read int, num_legs int);";
+            sqlstr = "CREATE TABLE family_members (id int, nom char, type char, num_books_read int, num_legs int);";
             sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'human', 200, 2);";
-            sqlstr += "INSERT INTO family_members VALUES (2, 'Mary', 'human', 180, 2);";
-            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'dog', 0, 4);";
+            sqlstr += "INSERT INTO family_members VALUES (2, 'Marie', 'human', 180, 2);";
+            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'chien', 0, 4);";
             table_names = ['family_members'];
             break;
         case 'family_null':
-            sqlstr = "CREATE TABLE family_members (id int, name char, gender char, species char, favorite_book char);";
+            sqlstr = "CREATE TABLE family_members (id int, nom char, gender char, type char, favorite_book char);";
             sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'male', 'human', 'To Kill a Mockingbird');";
-            sqlstr += "INSERT INTO family_members VALUES (2, 'Mary', 'female', 'human', 'Gone with the Wind');";
-            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'male', 'dog', NULL);";
+            sqlstr += "INSERT INTO family_members VALUES (2, 'Marie', 'female', 'human', 'Gone with the Wind');";
+            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'male', 'chien', NULL);";
             table_names = ['family_members'];
             break;
         case 'celebs_born':
-            sqlstr = "CREATE TABLE celebs_born (id int, name char, birthdate date);";
+            sqlstr = "CREATE TABLE celebs_born (id int, nom char, birthdate date);";
             sqlstr += "INSERT INTO celebs_born VALUES (1, 'Michael Jordan', '1963-02-17');";
             sqlstr += "INSERT INTO celebs_born VALUES (2, 'Justin Timberlake', '1981-01-31');";
             sqlstr += "INSERT INTO celebs_born VALUES (3, 'Taylor Swift', '1989-12-13');";
             table_names = ['celebs_born'];
             break;
         case 'tv':
-            sqlstr = "CREATE TABLE character (id int, name char);";
+            sqlstr = "CREATE TABLE character (id int, nom char);";
             sqlstr += "INSERT INTO character VALUES (1, 'Doogie Howser');";
             sqlstr += "INSERT INTO character VALUES (2, 'Barney Stinson');";
             sqlstr += "INSERT INTO character VALUES (3, 'Lily Aldrin');";
@@ -168,12 +168,12 @@ let load_database = function (db_type) {
             table_names = ['character', 'character_tv_show', 'character_actor'];
             break;
         case 'tv_normalized':
-            sqlstr = "CREATE TABLE character (id int, name char);";
+            sqlstr = "CREATE TABLE character (id int, nom char);";
             sqlstr += "INSERT INTO character VALUES (1, 'Doogie Howser');";
             sqlstr += "INSERT INTO character VALUES (2, 'Barney Stinson');";
             sqlstr += "INSERT INTO character VALUES (3, 'Lily Aldrin');";
             sqlstr += "INSERT INTO character VALUES (4, 'Willow Rosenberg');";
-            sqlstr += "CREATE TABLE tv_show (id int, name char);";
+            sqlstr += "CREATE TABLE tv_show (id int, nom char);";
             sqlstr += "INSERT INTO tv_show VALUES (1, 'Buffy the Vampire Slayer');";
             sqlstr += "INSERT INTO tv_show VALUES (2, 'How I Met Your Mother');";
             sqlstr += "INSERT INTO tv_show VALUES (3, 'Doogie Howser, M.D.');";
@@ -182,7 +182,7 @@ let load_database = function (db_type) {
             sqlstr += "INSERT INTO character_tv_show VALUES (2, 2, 2);";
             sqlstr += "INSERT INTO character_tv_show VALUES (3, 3, 2);";
             sqlstr += "INSERT INTO character_tv_show VALUES (4, 4, 1);";
-            sqlstr += "CREATE TABLE actor (id int, name char);";
+            sqlstr += "CREATE TABLE actor (id int, nom char);";
             sqlstr += "INSERT INTO actor VALUES (1, 'Alyson Hannigan');";
             sqlstr += "INSERT INTO actor VALUES (2, 'Neil Patrick Harris');";
             sqlstr += "CREATE TABLE character_actor (id int, character_id int, actor_id int);";
@@ -193,14 +193,14 @@ let load_database = function (db_type) {
             table_names = ['character', 'tv_show', 'character_tv_show', 'actor', 'character_actor'];
             break;
         case 'tv_extra':
-            sqlstr = "CREATE TABLE character (id int, name char);";
+            sqlstr = "CREATE TABLE character (id int, nom char);";
             sqlstr += "INSERT INTO character VALUES (1, 'Doogie Howser');";
             sqlstr += "INSERT INTO character VALUES (2, 'Barney Stinson');";
             sqlstr += "INSERT INTO character VALUES (3, 'Lily Aldrin');";
             sqlstr += "INSERT INTO character VALUES (4, 'Willow Rosenberg');";
             sqlstr += "INSERT INTO character VALUES (5, 'Steve Urkel');";
             sqlstr += "INSERT INTO character VALUES (6, 'Homer Simpson');";
-            sqlstr += "CREATE TABLE tv_show (id int, name char);";
+            sqlstr += "CREATE TABLE tv_show (id int, nom char);";
             sqlstr += "INSERT INTO tv_show VALUES (1, 'Buffy the Vampire Slayer');";
             sqlstr += "INSERT INTO tv_show VALUES (2, 'How I Met Your Mother');";
             sqlstr += "INSERT INTO tv_show VALUES (3, 'Doogie Howser, M.D.');";
@@ -210,7 +210,7 @@ let load_database = function (db_type) {
             sqlstr += "INSERT INTO character_tv_show VALUES (2, 2, 2);";
             sqlstr += "INSERT INTO character_tv_show VALUES (3, 3, 2);";
             sqlstr += "INSERT INTO character_tv_show VALUES (4, 4, 1);";
-            sqlstr += "CREATE TABLE actor (id int, name char);";
+            sqlstr += "CREATE TABLE actor (id int, nom char);";
             sqlstr += "INSERT INTO actor VALUES (1, 'Alyson Hannigan');";
             sqlstr += "INSERT INTO actor VALUES (2, 'Neil Patrick Harris');";
             sqlstr += "INSERT INTO actor VALUES (3, 'Adam Sandler');";
@@ -223,11 +223,11 @@ let load_database = function (db_type) {
             table_names = ['character', 'tv_show', 'character_tv_show', 'actor', 'character_actor'];
             break;
         case 'self_join':
-            sqlstr = "CREATE TABLE rps (id int, name char, defeats_id int);";
+            sqlstr = "CREATE TABLE rps (id int, nom char, defeats_id int);";
             sqlstr += "INSERT INTO rps VALUES (1, 'Rock', 3);";
             sqlstr += "INSERT INTO rps VALUES (2, 'Paper', 1);";
             sqlstr += "INSERT INTO rps VALUES (3, 'Scissors', 2);";
-            sqlstr += "CREATE TABLE employees (id int, name char, title char, boss_id int);";
+            sqlstr += "CREATE TABLE employees (id int, nom char, title char, boss_id int);";
             sqlstr += "INSERT INTO employees VALUES (1, 'Patrick Smith', 'Software Engineer', 2);";
             sqlstr += "INSERT INTO employees VALUES (2, 'Abigail Reed', 'Engineering Manager', 3);";
             sqlstr += "INSERT INTO employees VALUES (3, 'Bob Carey', 'Director of Engineering', 4);";
@@ -235,7 +235,7 @@ let load_database = function (db_type) {
             table_names = ['rps', 'employees'];
             break;
         case 'robot':
-            sqlstr = "CREATE TABLE robots (id int, name char);";
+            sqlstr = "CREATE TABLE robots (id int, nom char);";
             sqlstr += "INSERT INTO robots VALUES (1, 'Robot 2000');";
             sqlstr += "INSERT INTO robots VALUES (2, 'Champion Robot 2001');";
             sqlstr += "INSERT INTO robots VALUES (3, 'Dragon');";
@@ -247,7 +247,7 @@ let load_database = function (db_type) {
             table_names = ['robots'];
             break;
         case 'robot_code':
-            sqlstr = "CREATE TABLE robots (id int, name char, location char);";
+            sqlstr = "CREATE TABLE robots (id int, nom char, location char);";
             sqlstr += "INSERT INTO robots VALUES (1, 'R2000 - Robot 2000', 'New City, NY');";
             sqlstr += "INSERT INTO robots VALUES (2, 'R2001 - Champion Robot 2001', 'Palo Alto, CA');";
             sqlstr += "INSERT INTO robots VALUES (3, 'D0001 - Dragon', 'New York City, NY');";
@@ -280,32 +280,25 @@ let load_database = function (db_type) {
     return database;
 };
 
-
 let load_level = function (hash_code = "select") {
 
     // The current level is 1 by default, unless the hash code matches the short name for a level.
-    current_level = 1;
-    for (let index in levels) {
-        if (hash_code == levels[index]['short_name']) {
-            current_level = parseInt(index, 10) + 1;
-            break;
-        }
-    }
+    current_level = levels.findIndex(level => level.short_name === hash_code) +1;
     let database = load_database(levels[current_level - 1]['database_type']);
+    console.log(levels[current_level - 1]['database_type']);
     // Set text for current level
     lesson_name = levels[current_level - 1]['name'];
-    $('#lesson-name').text("Lesson " + current_level + ": " + lesson_name);
-    $('#info').html(levels[current_level - 1]['info']);
+    $('#lesson-name').text("Exercice " + current_level + ": " + lesson_name);
     $('#prompt').html(levels[current_level - 1]['prompt']);
 
     // Add "next" and "previous" links if it makes sense.
     if (current_level > 1) {
-        $('#previous-link').attr('href', '#!' + levels[current_level - 2]['short_name']).show();
+        $('#previous-link').attr('onclick', 'load_level(' + levels[current_level - 2]['short_name']+')').show();
     } else {
         $('#previous-link').hide();
     }
     if (current_level < levels.length) {
-        $('#next-link').attr('href', '#!' + levels[current_level]['short_name']).show();
+        $('#next-link').attr('onclick', 'load_level(' + levels[current_level]['short_name']+')').show();
     } else {
         $('#next-link').hide();
     }
@@ -335,7 +328,11 @@ let load_level = function (hash_code = "select") {
  *  - custom_error_message: If the validation fails, show this error message to the user
  */
 async function init() {
-  levels = await $.ajax("js/levels.json");
+  levels = await $.ajax({
+      method: "GET",
+      url: "js/levels.json",
+      dataType: "json"
+  });
   db = load_level();
 }
 
@@ -356,12 +353,6 @@ $('#sql-input').keypress(function (event) {
     execute_query();
     return false;
   }
-});
-
-// When the URL after the # changes, we load a new level,
-// and let Google Analytics know that the page has changed.
-$(window).bind('hashchange', function () {
-    db = load_level();
 });
 
 init().then();

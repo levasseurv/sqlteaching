@@ -19,9 +19,13 @@
 .table-name {
     font-style: italic;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 1rem;
 }
 
 .expected-results-container {
     display: none;
+}
+
+footer{
+    line-height: 2em;
 }

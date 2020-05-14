@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Introduction à SQL</title>
-    <script src="js/jquery-2.1.3.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"
+            defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"
+            defer></script>
     <script src="js/sql.js" defer></script>
     <script src="js/sqlteaching.js" defer></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">IntroSQL</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,50 +29,126 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">SELECT<span class="sr-only">(current)</span></a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="s11Dropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sélections simples (SELECT)
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="s11Dropdown">
+                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Sélectionner tous les champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données (WHERE)</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" onclick="load_level('where_greater_than')">Opérateurs de comparaison</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('and')">Opérateur logique AND</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('and')">Opérateur logique OR</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('and')">Spécifier un domaine de valeurs (IN)</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Agrégation
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
+                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
+                            champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Jointures
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
+                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
+                            champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dates et texte
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
+                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
+                            champs</a>
+                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
+                    </div>
                 </li>
             </ul>
         </div>
     </nav>
 </header>
 <main class="container-fluid">
-    <h1 id='lesson-name'></h1>
-    <section class="container-fluid">
-        <h2>Explications</h2>
-        <div id='info'>
-        </div>
-    </section>
-    <section class="container-fluid">
-        <h2>Exercice</h2>
-        <div id='prompt' class="col-md-6">
-        </div>
-        <div id='answer-correct' class='alert alert-success'>
-        </div>
-        <div id='answer-wrong' class='alert alert-danger'>
-        </div>
-        <div class='sql-input-container col-md-3'>
+    <div>
+        <h1 id='lesson-name' class="display-4">Exercice 1: Sélectionner tous les champs</h1>
+        <p id='prompt' class="lead">
+            Sélectionner tous les membres de la famille. Afficher toutes leurs caractéristiques.
+        </p>
+        <div id='answer-correct' class='alert alert-success'></div>
+        <div id='answer-wrong' class='alert alert-danger'></div>
+        <div class='sql-input-container'>
             <label class="h3 d-block" for="sql-input" id='sql-header'>Entrer la requête SQL:</label>
-            <textarea id='sql-input' class="form-control" rows=8 cols=40 tabindex='1'></textarea>
-            <button id='sql-link' class="btn btn-dark d-block" tabindex="2">Lancer la requête</button>
+            <small id="submitHelp" class="text-muted">Les touches <kbd>CTRL</kbd> + <kbd>&crarr;</kbd> permettent d'exécuter la requête</small>
+            <textarea id='sql-input' class="form-control" rows=8 cols=15 tabindex='1'></textarea>
+            <button id='sql-link' class="btn btn-outline-dark" tabindex="2">Lancer la requête</button>
         </div>
-        <div class='current-tables-container col-md-3'>
+    </div>
+    <div>
+        <div class="current-tables-container">
             <h3>Table(s) courante(s)</h3>
-            <div id='current-tables'></div>
+            <div id="current-tables">
+                <div class="table-name">famille</div>
+                <table class="table table-sm table-responsive-md col-md-3 mr-auto">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>id</th>
+                        <th>nom</th>
+                        <th>livres_lus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Dave</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Marie</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Chaton</td>
+                        <td>0</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class='results-container col-md-3'>
+        <div class="results-container ">
             <h3>Résultats obtenus</h3>
             <div id='results'></div>
         </div>
-        <div class='expected-results-container col-md-3'>
+        <div class="expected-results-container">
             <h3>Résultats attendus</h3>
             <div id='expected-results'></div>
         </div>
-    </section>
+    </div>
 </main>
-
+<footer class="footer d-block">
+    <div class="footer-copyright text-right mr-3 text-muted">
+        <a href="https://vlevasseur.gitbook.io/intro-sql/">Voir les notes de cours</a></br>
+        Ce site a été produit à partir du <a href="https://github.com/rhc2104/sqlteaching">code source</a> de <a
+            href="https://www.sqlteaching.com/">sqlteaching.com</a>
+    </div>
+</footer>
 </body>
 </html>
