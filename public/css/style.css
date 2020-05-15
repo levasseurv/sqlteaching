@@ -2,6 +2,10 @@
     font-weight: bold;
 }
 
+#prompt{
+    max-width : 65em;
+}
+
 #prompt, #results, .current-tables-container{
     padding-bottom: 2rem;
 }

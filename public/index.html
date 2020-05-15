@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Introduction à SQL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="js/jquery-2.1.3.min.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous" defer></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous" defer></script>
     <script src="js/sql.js" defer></script>
@@ -25,56 +25,60 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="s11Dropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="selectDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sélections simples (SELECT)
+                        Sélections
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="s11Dropdown">
-                        <a class="dropdown-item" href="#!famille">Sélectionner tous les champs</a>
-                        <a class="dropdown-item" href="#!select_columns">Spécifier des champs</a>
-                        <a class="dropdown-item" href="#!where_equals">Filtrer des données (WHERE)</a>
+                    <div class="dropdown-menu" aria-labelledby="selectDropdown">
+                        <a class="dropdown-item" href="#!famille">1.Sélectionner toutes les données</a>
+                        <a class="dropdown-item" href="#!select_columns">2. Sélectionner quelques champs</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="whereDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filtres
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="whereDropdown">
+                        <a class="dropdown-item" href="#!where_equals">3. Filtrer les données</a>
+                        <a class="dropdown-item" href="#!where_greater_than">4. Opérateurs de comparaison</a>
+                        <a class="dropdown-item" href="#!and">5. Opérateur logique AND</a>
+                        <a class="dropdown-item" href="#!or">6. Opérateur logique OR</a>
+                        <a class="dropdown-item" href="#!in">7. Spécifier un domaine de valeurs</a>
+                        <a class="dropdown-item" href="#!distinct">8. Retirer les répétitions</a>
+                        <a class="dropdown-item" href="#!order_by">9. Ordonner les résultats</a>
+                        <a class="dropdown-item" href="#!limit">10. Limiter les résultats</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="asDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Calculs
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="asDropdown">
+                        <a class="dropdown-item" href="#!as">11. Alias (AS)</a>
+                        <a class="dropdown-item" href="#!maths">12. Opérateurs mathématiques</a>
+                        <a class="dropdown-item" href="#!count">13. Nombre (COUNT)</a>
+                        <a class="dropdown-item" href="#!count_where">14. Nombre et filtre</a>
+                        <a class="dropdown-item" href="#!sum">15. Somme</a>
+                        <a class="dropdown-item" href="#!avg">16. Moyenne</a>
+                        <a class="dropdown-item" href="#!max_min">17. Maximum et minimum</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#!where_greater_than">Opérateurs de comparaison</a>
-                        <a class="dropdown-item" href="#!and">Opérateur logique AND</a>
-                        <a class="dropdown-item" href="#">Opérateur logique OR</a>
-                        <a class="dropdown-item" href="#">Spécifier un domaine de valeurs (IN)</a>
+                        <a class="dropdown-item" href="#!group_by">18. Agrégation sur les valeurs (GROUP BY)</a>
+                        <a class="dropdown-item" href="#!having">19. Filtres sur les agrégats (HAVING)</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Agrégation
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
-                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
-                            champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
+                    <a class="nav-link dropdown-toggle disabled" href="#" id="agregDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Jointures
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
-                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
-                            champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
-                    </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="agregDropdown" role="button"
+                    <a class="nav-link dropdown-toggle disabled" href="#" id="datesDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dates et texte
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="agregDropdown">
-                        <a class="dropdown-item" href="#" onclick="load_level('famille')">Tous les champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('select_columns')">Spécifier des
-                            champs</a>
-                        <a class="dropdown-item" href="#" onclick="load_level('where_equals')">Filtrer des données</a>
-                    </div>
                 </li>
             </ul>
         </div>
@@ -90,8 +94,8 @@
         <div id='answer-wrong' class='alert alert-danger'></div>
         <div class='sql-input-container'>
             <label class="h3 d-block" for="sql-input" id='sql-header'>Entrer la requête SQL:</label>
-            <small id="submitHelp" class="text-muted">Les touches <kbd>CTRL</kbd> + <kbd>&crarr;</kbd> permettent d'exécuter la requête</small>
-            <textarea id='sql-input' class="form-control" rows=8 cols=15 tabindex='1'></textarea>
+            <small id="submitHelp" class="text-muted d-block mb-2">Les touches <kbd>CTRL</kbd> + <kbd>&crarr;</kbd> permettent d'exécuter la requête</small>
+            <textarea id='sql-input' class="form-control" rows=8 tabindex='1'></textarea>
             <button id='sql-link' class="btn btn-outline-dark" tabindex="2">Lancer la requête</button>
         </div>
     </div>

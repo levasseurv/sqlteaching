@@ -46,7 +46,7 @@ let show_is_correct = function (is_correct, custom_error_message) {
     if (is_correct) {
         is_correct_html = 'Félicitations vous avez réussi cet exercice !<br/>';
         if (current_level < levels.length) {
-            is_correct_html += '<a tabindex="3" href="#!' +  levels[current_level]['short_name'] + '">Passer au prochain exercice</a>';
+            is_correct_html += '<a tabindex="3" href="#!' +  levels[current_level]['short_name'] + '" id="next">Passer au prochain exercice <span class="text-muted small"><kbd>CTRL</kbd> + <kbd>&rarr;</kbd></span></a>';
         } else {
             is_correct_html += "C'était le dernier exercice ! Félicitations :)";
         }
@@ -117,28 +117,28 @@ let load_database = function (db_type) {
             sqlstr += "INSERT INTO famille VALUES (3, 'Chaton', 0);";
             table_names = ['famille'];
             break;
-        case 'amischaton':
-            sqlstr = "CREATE TABLE amis_chaton (id int, nom char, type char, taille_cm int);";
-            sqlstr += "INSERT INTO amis_chaton VALUES (1, 'Dave', 'human', 180);";
-            sqlstr += "INSERT INTO amis_chaton VALUES (2, 'Marie', 'human', 160);";
-            sqlstr += "INSERT INTO amis_chaton VALUES (3, 'Frisou', 'cat', 30);";
-            sqlstr += "INSERT INTO amis_chaton VALUES (4, 'Leela', 'cat', 25);";
+        case 'amis_chaton':
+            sqlstr = "CREATE TABLE amis_chaton (id int, nom char, type char, taille_cm float);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (1, 'Dave', 'humain', 180);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (2, 'Marie', 'humain', 160);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (3, 'Frisou', 'chat', 30);";
+            sqlstr += "INSERT INTO amis_chaton VALUES (4, 'Leela', 'chat', 25);";
             sqlstr += "INSERT INTO amis_chaton VALUES (5, 'Odie', 'chien', 40);";
             sqlstr += "INSERT INTO amis_chaton VALUES (6, 'Pitou','chien', 35);";
             sqlstr += "INSERT INTO amis_chaton VALUES (7, 'Jojo', 'chien', 55);";
             table_names = ['amis_chaton'];
             break;
         case 'family_and_legs':
-            sqlstr = "CREATE TABLE family_members (id int, nom char, type char, num_books_read int, num_legs int);";
-            sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'human', 200, 2);";
-            sqlstr += "INSERT INTO family_members VALUES (2, 'Marie', 'human', 180, 2);";
-            sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'chien', 0, 4);";
-            table_names = ['family_members'];
+            sqlstr = "CREATE TABLE famille (id int, nom char, livres_lus int, nb_jambes int);";
+            sqlstr += "INSERT INTO famille VALUES (1, 'Dave', 200,2);";
+            sqlstr += "INSERT INTO famille VALUES (2, 'Marie', 180,2);";
+            sqlstr += "INSERT INTO famille VALUES (3, 'Chaton', 0,4);";
+            table_names = ['famille'];
             break;
         case 'family_null':
             sqlstr = "CREATE TABLE family_members (id int, nom char, gender char, type char, favorite_book char);";
-            sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'male', 'human', 'To Kill a Mockingbird');";
-            sqlstr += "INSERT INTO family_members VALUES (2, 'Marie', 'female', 'human', 'Gone with the Wind');";
+            sqlstr += "INSERT INTO family_members VALUES (1, 'Dave', 'male', 'humain', 'To Kill a Mockingbird');";
+            sqlstr += "INSERT INTO family_members VALUES (2, 'Marie', 'female', 'humain', 'Gone with the Wind');";
             sqlstr += "INSERT INTO family_members VALUES (3, 'Pickles', 'male', 'chien', NULL);";
             table_names = ['family_members'];
             break;
@@ -346,13 +346,20 @@ Event Handlers
 $('#sql-link').click(execute_query);
 
 // Keypress handler for ctrl + enter to "Run SQL"
-$('#sql-input').keypress(function (event) {
-  let keyCode = (event.which ? event.which : event.keyCode);
+$('#sql-input').keydown(function(event) {
 
-  if (keyCode === 10 || keyCode === 13 && event.ctrlKey) {
-    execute_query();
-    return false;
-  }
+    //Exécuter la requête
+    let keyCode = (event.which ? event.which : event.code);
+    if (keyCode === 10 || keyCode === 13 && event.ctrlKey) {
+        execute_query();
+        return false;
+    }
+
+    //Prochain exercice avec CTRL + ->
+    if (keyCode === 39 && event.ctrlKey) {
+        window.location.hash = $('#next').attr('href');
+        return false;
+    }
 });
 
 // When the URL after the # changes, we load a new level.
