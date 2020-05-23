@@ -69,16 +69,28 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle disabled" href="#" id="agregDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="joinDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Jointures
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="joinDropdown">
+                        <a class="dropdown-item" href="#!nested">20. Requêtes imbriquées</a>
+                        <a class="dropdown-item" href="#!joins">21. Jointure interne</a>
+                        <a class="dropdown-item" href="#!joins_with_where">22. Jointures avec WHERE</a>
+                        <a class="dropdown-item" href="#!left_joins">23. Jointure externe gauche</a>
+                        <a class="dropdown-item" href="#!self_join">24. Jointure d'une table avec elle-même</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle disabled" href="#" id="datesDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="datesDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dates et texte
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="datesDropdown">
+                        <a class="dropdown-item" href="#!like">25. LIKE</a>
+                        <a class="dropdown-item" href="#!substr">26. SUBSTR</a>
+                        <a class="dropdown-item" href="#!date">27. Dates</a>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -88,7 +100,7 @@
     <div>
         <h1 id='lesson-name' class="display-4">Exercice 1: Sélectionner tous les champs</h1>
         <p id='prompt' class="lead">
-            Sélectionner tous les membres de la famille. Afficher toutes leurs caractéristiques.
+            Ci-dessous se trouve la table contenant tous les membres d'une famille. Trouver tous les membres de la famille. Afficher toutes leurs caractéristiques.
         </p>
         <div id='answer-correct' class='alert alert-success'></div>
         <div id='answer-wrong' class='alert alert-danger'></div>
